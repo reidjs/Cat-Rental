@@ -1,0 +1,10 @@
+<form action="<%= new_cat_url %>" method="post">
+<input type="text" name="cat[name]">Name
+<input type="radio" name="cat[sex]" value="m">Male
+<input type="radio" name="cat[sex]" value="f">Female
+<select name="cat[color]">
+  <% @cat.colors.each do |color| %>
+    <option value="<%= color %>"><%= color %></option>
+  <% end %>
+</select>
+</form>

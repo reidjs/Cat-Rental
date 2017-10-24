@@ -1,0 +1,14 @@
+<h1>Index cats</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Color</th>
+  </tr>
+
+<% @cats.each do |cat| %>
+<tr>
+  <td><%= cat.name %></td>
+  <td><%= cat.color %></td>
+</tr>
+<% end %>
+</table>
