@@ -1,6 +1,17 @@
 class CatsController < ApplicationController
   def new
+    @cat = Cat.new
     render :new
+  end
+
+  def update
+    @cat = Cat.find_by(id: params[:id])
+    if @cat.update(cat_params)
+      # render plain: "You made a cat!"
+      redirect_to cat_url(@cat)
+    else
+      render json: @cat.errors.full_messages
+    end
   end
 
   def create
@@ -8,6 +19,15 @@ class CatsController < ApplicationController
     if @cat.save
       # render plain: "You made a cat!"
       redirect_to cat_url(@cat)
+    else
+      render json: @cat.errors.full_messages
+    end
+  end
+
+  def edit
+    @cat = Cat.find_by(id: params[:id])
+    if @cat
+      render :edit
     else
       render json: @cat.errors.full_messages
     end
