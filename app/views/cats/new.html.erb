@@ -1,10 +1,14 @@
-<form action="<%= new_cat_url %>" method="post">
-<input type="text" name="cat[name]">Name
+<form action="<%= cats_url %>" method="post">Name
+<input type="text" name="cat[name]">
 <input type="radio" name="cat[sex]" value="m">Male
 <input type="radio" name="cat[sex]" value="f">Female
 <select name="cat[color]">
-  <% @cat.colors.each do |color| %>
+  <option disabled selected>Select a color</option>
+  <% Cat.colors.each do |color| %>
     <option value="<%= color %>"><%= color %></option>
   <% end %>
 </select>
+Birthday <input id="date" type="date" name=cat[birth_date]>
+<textarea name=cat[description]></textarea>
+<input type="submit" value="Create a cat!">
 </form>

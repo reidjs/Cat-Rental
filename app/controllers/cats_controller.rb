@@ -1,7 +1,16 @@
 class CatsController < ApplicationController
   def new
-    @cat = Cat.new
     render :new
+  end
+
+  def create
+    @cat = Cat.new(cat_params)
+    if @cat.save
+      # render plain: "You made a cat!"
+      redirect_to cat_url(@cat)
+    else
+      render json: @cat.errors.full_messages
+    end
   end
 
   def index
@@ -20,5 +29,10 @@ class CatsController < ApplicationController
     else
       render json: @cat.errors.full_messages
     end
+  end
+
+  private
+  def cat_params
+    params.require(:cat).permit(:name, :birth_date, :sex, :color, :description)
   end
 end
