@@ -9,7 +9,28 @@ class CatRentalRequest < ApplicationRecord
     STATUS
   end
 
+  def approve!
+    CatRentalRequest.transaction do
+      self.status = 'APPROVED'
+      self.save!
+      overlapping_approved_requests.each do |request|
+        request.status = 'DENIED'
+        request.save!
+      end
+    end
+  end
 
+  def overlapping_approved_requests
+    #returns array of approved requests for cat_id cat
+    overlapped_requests = []
+    requested_cat = Cat.find(cat_id)
+    requested_cat.cat_rental_requests.each do |request|
+      if overlaps?(request) && request.status == 'APPROVED'
+        overlapped_requests << request
+      end
+    end
+    overlapped_requests
+  end
 
   def overlapping_requests
     # other_rental = CatRentalRequest.new(cat_id: 1, start_date: Date.yesterday - 10,
