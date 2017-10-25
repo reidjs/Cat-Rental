@@ -1,2 +1,6 @@
 <h1>Show cat</h1>
 <%= @cat.name %>
+
+<% @cat.cat_rental_requests.order('start_date ASC').each do |request| %>
+  <p>From: <%= request.start_date %> to <%= request.end_date %></p>
+<% end %>
