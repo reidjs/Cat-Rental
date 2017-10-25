@@ -10,6 +10,7 @@ class CatRentalRequest < ApplicationRecord
   end
 
   def approve!
+    raise "Only works on pending rentals" if self.status != 'PENDING'
     CatRentalRequest.transaction do
       self.status = 'APPROVED'
       self.save!
@@ -25,7 +26,7 @@ class CatRentalRequest < ApplicationRecord
     overlapped_requests = []
     requested_cat = Cat.find(cat_id)
     requested_cat.cat_rental_requests.each do |request|
-      if overlaps?(request) && request.status == 'APPROVED'
+      if overlaps?(request) && request.status == 'PENDING'
         overlapped_requests << request
       end
     end
@@ -39,6 +40,7 @@ class CatRentalRequest < ApplicationRecord
     #check if any of those overlap this instance
     #if true, do not validate and print out error
     #otherwise allow validation
+    return if status == 'DENIED'
     requested_cat = Cat.find(cat_id)
     requested_cat.cat_rental_requests.each do |request|
       # debugger
